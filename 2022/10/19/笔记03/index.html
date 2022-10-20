@@ -1,0 +1,1279 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>  Vue基础3 |    Fly_cloud</title>
+  <meta name="description" content="A minimalist theme for hexo.">
+  <!-- 标签页图标 -->
+  
+
+  <!-- 图标库 -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- 动画库 -->
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fushaolei/cdn-white@1.0/css/animate.css"/>
+  
+  <!-- css文件 -->
+  
+<link rel="stylesheet" href="/GaoHangIdea/css/white.css">
+
+  <!-- 代码高亮 -->
+  
+    
+      
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.1/styles/github.css">
+
+    
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+
+<div class="menu-outer">
+    <div class="menu-inner">
+      <div class="menu-site-name  animate__animated  animate__fadeInUp">
+        <a href="/GaoHangIdea/">
+          Fly_cloud
+        </a>
+        
+      </div>
+      <div class="menu-group">
+        <ul class="menu-ul">
+        
+          <a href="/GaoHangIdea/" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              HOME
+            </li>
+          </a>
+        
+          <a href="/GaoHangIdea/archives" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              BLOG
+            </li>
+          </a>
+        
+          <a href="/GaoHangIdea/tags" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              TAGS
+            </li>
+          </a>
+        
+        
+          <li class="menu-li animate__animated  animate__fadeInUp" id="sort">
+             分类
+             <div class="categories-outer " id="sort-div">
+               <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li></ul>
+             </div>
+          </li>
+        
+        
+          <li class="menu-li animate__animated  animate__fadeInUp" id="mobile-menu">
+            <i class="ri-menu-line"></i>
+          </li>
+        
+        </ul>
+
+      </div>
+
+    </div>
+</div>
+<div id="mobile-main" class="animate__animated  animate__fadeIn">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-site-name animate__animated  animate__fadeInUp">
+      <a href="/GaoHangIdea/">
+        Fly_cloud
+      </a>
+    </div>
+    <div class="mobile-menu-group" id="mobile-close">
+      <i class="ri-close-line"></i>
+    </div>
+
+  </div>
+
+  <div class="mobile-menu-div">
+  
+    <a href="/GaoHangIdea/" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>HOME</span>
+      </div>
+    </a>
+  
+    <a href="/GaoHangIdea/archives" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>BLOG</span>
+      </div>
+    </a>
+  
+    <a href="/GaoHangIdea/tags" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>TAGS</span>
+      </div>
+    </a>
+  
+  
+  </div>
+
+
+</div>
+
+<div class="body-outer">
+  <div class="body-inner">
+    
+<article class="post-inner">
+  <div class="post-content-outer">
+    <div class="post-intro">
+      <div class="post-title animate__animated  animate__fadeInUp">Vue基础3</div>
+      <div class="meta-intro animate__animated  animate__fadeInUp">Oct 19 2022</div>
+      
+    </div>
+    <div class="post-content-inner">
+      <div class="post-content-inner-space">
+
+      </div>
+      <div class="post-content-main animate__animated  animate__fadeInUp">
+        <!-- top型目录 -->
+        
+        <h2 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2.代码实现"></a>2.代码实现</h2><p><strong>index.vue</strong></p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;!-- 主页面 --&gt;
+        &lt;button @click=&quot;isShowForm = true&quot;&gt;添加&lt;/button&gt;
+        &lt;hr&gt;
+        &lt;!-- 表格 --&gt;
+        &lt;v-list @del=&quot;del&quot; :menus=&quot;menus&quot;&gt;&lt;/v-list&gt;
+        &lt;!-- 表单 --&gt;
+        &lt;v-form @hideMaskForm=&quot;hideMaskForm&quot; @add=&quot;add&quot; v-if=&quot;isShowForm&quot;&gt;&lt;/v-form&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+// 组件引入
+import vList from &quot;./list.vue&quot;
+import vForm from &quot;./form.vue&quot;
+// 对外暴露
+export default &#123;
+    // 组件注册
+    components: &#123;
+        vList, vForm
+    &#125;,
+    data() &#123;
+        return &#123;
+            isShowForm: false,
+            menus: [],//新闻的集合
+        &#125;
+    &#125;,
+    methods:&#123;
+        add(arg)&#123;
+            // console.log(arg,&#39;index&#39;)
+            this.menus.push(arg.obj)
+            this.isShowForm = false;
+        &#125;,
+        hideMaskForm(arg)&#123;
+            // console.log(arg)
+            this.isShowForm = arg;
+        &#125;,
+        del(arg)&#123;
+            // console.log(arg,&quot;index&quot;)
+            this.menus.splice(arg.index,1)
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<p><strong>form.list</strong></p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div class=&quot;mask&quot; @click.self=&quot;cancel&quot;&gt;
+        &lt;div class=&quot;con&quot;&gt;
+            &lt;div&gt;添加&lt;/div&gt;
+            &lt;div&gt;
+                标题： &lt;input type=&quot;text&quot; v-model=&quot;title&quot;&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                内容： &lt;input type=&quot;text&quot; v-model=&quot;content&quot;&gt;
+            &lt;/div&gt;
+            &lt;button @click=&quot;add&quot;&gt;确定&lt;/button&gt;
+            &lt;button @click=&quot;cancel&quot;&gt;取消&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    data() &#123;
+        return &#123;
+            title: &quot;&quot;,
+            content: &quot;&quot;
+        &#125;
+    &#125;,
+    methods:&#123;
+        // 执行添加
+        add()&#123;
+            var  &#123;title,content&#125; = this;
+            var obj = &#123;
+                id:new  Date().getTime(),
+                title,content
+            &#125;
+            // console.log(obj)
+            this.$emit(&quot;add&quot;,&#123; obj &#125;);
+        &#125;,
+        // 取消
+        cancel()&#123;
+            this.$emit(&quot;hideMaskForm&quot;,false);
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.mask &#123;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(11, 11, 17, 0.3);
+    position: absolute;
+    left: 0;
+    top: 0;
+&#125;
+.con&#123;
+    width: 340px;
+    height: 200px;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    /*相对于自己本身移动的距离*/
+    transform: translate(-50%,-50%);
+&#125;
+&lt;/style&gt;
+</code></pre>
+<p><strong>list.vue</strong></p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;table border=&quot;1&quot; width=&quot;600px&quot;&gt;
+            &lt;tr&gt;
+                &lt;th&gt;序号&lt;/th&gt;
+                &lt;th&gt;标题&lt;/th&gt;
+                &lt;th&gt;内容&lt;/th&gt;
+                &lt;th&gt;操作&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;tr v-for=&quot;(item,index) in menus&quot; :key=&quot;item.id&quot;&gt; 
+                &lt;td&gt;&#123;&#123; index+1 &#125;&#125;&lt;/td&gt;
+                &lt;td&gt;&#123;&#123; item.title &#125;&#125;&lt;/td&gt;
+                &lt;td&gt;&#123;&#123; item.content &#125;&#125;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;button @click=&quot;del(index,item.id)&quot;&gt;删除&lt;/button&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    props:[&quot;menus&quot;],
+    data()&#123;
+        return &#123;
+            
+        &#125;
+    &#125;,
+    methods:&#123;
+        del(index,id)&#123;
+            this.$emit(&#39;del&#39;,&#123;index,id&#125;)
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h1 id="slot插槽"><a href="#slot插槽" class="headerlink" title="slot插槽"></a>slot插槽</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><pre><code class="html">在父组件调用子组件时，向子组件传递标签节点，slot在子组件占位
+</code></pre>
+<h2 id="2-匿名插槽-一个"><a href="#2-匿名插槽-一个" class="headerlink" title="2.匿名插槽 (一个)"></a>2.匿名插槽 (一个)</h2><p>代码：</p>
+<pre><code class="vue">parent.vue
+&lt;template&gt;
+    &lt;div class=&quot;box&quot;&gt;
+        &lt;h3&gt;parent组件&lt;/h3&gt;
+        &lt;v-child&gt;
+            &lt;!-- 使用默认插槽 --&gt;
+            &lt;button&gt;首页&lt;/button&gt;
+        &lt;/v-child&gt;
+        &lt;v-child&gt;
+            &lt;!-- 使用默认插槽 --&gt;
+            3
+        &lt;/v-child&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import  vChild from &quot;./child.vue&quot;
+export default &#123;
+        components:&#123;
+            vChild
+        &#125;
+    &#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<pre><code class="vue">child.vue
+&lt;template&gt;
+    &lt;div class=&quot;box&quot;&gt;
+        &lt;!-- &lt;h3&gt;child组件&lt;/h3&gt; --&gt;
+        &lt;!-- 匿名插槽  一个 --&gt;
+        &lt;!-- &lt;slot&gt;&lt;/slot&gt; --&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+        
+    &#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h2 id="3-具名插槽-多个"><a href="#3-具名插槽-多个" class="headerlink" title="3.具名插槽(多个)"></a>3.具名插槽(多个)</h2><p>代码：</p>
+<pre><code class="vue">parent.vue
+&lt;template&gt;
+    &lt;div class=&quot;box&quot;&gt;
+        &lt;h3&gt;parent组件&lt;/h3&gt;
+        &lt;v-child&gt;
+            &lt;!-- 使用具名插槽 --&gt;
+            &lt;div slot=&quot;left&quot;&gt;左侧插槽&lt;/div&gt;
+            &lt;h3 slot=&quot;center&quot;&gt;中间插槽&lt;/h3&gt;
+        &lt;/v-child&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import  vChild from &quot;./child.vue&quot;
+export default &#123;
+        components:&#123;
+            vChild
+        &#125;
+    &#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<pre><code class="vue">child.vue
+&lt;template&gt;
+    &lt;div class=&quot;box&quot;&gt;
+        &lt;!-- 具名插槽 --&gt;
+        &lt;slot name=&quot;left&quot;&gt;&lt;/slot&gt;
+        &lt;slot name=&quot;center&quot;&gt;&lt;/slot&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+        
+    &#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<p><strong>c1</strong></p>
+<h1 id="路由安装"><a href="#路由安装" class="headerlink" title="路由安装"></a>路由安装</h1><h2 id="1-路由介绍"><a href="#1-路由介绍" class="headerlink" title="1.路由介绍"></a>1.路由介绍</h2><pre><code class="js">将路径映射到指定的组件
+hash : http://localhost:8080/#/login
+history:  http://localhost:8080/login
+</code></pre>
+<h2 id="2-路由安装"><a href="#2-路由安装" class="headerlink" title="2.路由安装"></a>2.路由安装</h2><pre><code>vue-router 路由模块
+1.npm  install vue-router@3.5.1   --save
+2.在创建项目时，直接选择router模块  （直接使用当前方式进行安装路由）
+</code></pre>
+<h2 id="3-基本使用"><a href="#3-基本使用" class="headerlink" title="3.基本使用"></a>3.基本使用</h2><p>语法：</p>
+<pre><code class="js">页面： login.vue  register.vue 注册   index.vue 首页
+路由出口：
+    &lt;router-view&gt;&lt;/router-view&gt;
+     &lt;router-view/&gt;
+index.vue
+login.vue
+reg.vue
+</code></pre>
+<h2 id="4-路由重定向"><a href="#4-路由重定向" class="headerlink" title="4.路由重定向"></a>4.路由重定向</h2><pre><code class="js">&#123;path:&quot;*&quot;,redirect:&quot;/login&quot;&#125;
+</code></pre>
+<p>代码：</p>
+<p>router&#x2F;Index.js</p>
+<pre><code class="js">// 路由文件
+import Vue from &#39;vue&#39;
+import VueRouter from &#39;vue-router&#39;
+// 引入页面组件
+import Index from &quot;../views/index.vue&quot;
+import Login from &quot;../views/login.vue&quot;
+import Reg from &quot;../views/reg.vue&quot;
+// .vue    页面     公共组件
+Vue.use(VueRouter)
+// 制定路由规则
+const routes = [
+  &#123;
+    path:&quot;/&quot;,
+    component:Index
+  &#125;,
+  &#123;
+    path:&quot;/index&quot;,
+    component:Index
+  &#125;,
+  &#123;
+    path:&quot;/login&quot;,
+    component:Login
+  &#125;,
+  &#123;
+    path:&quot;/reg&quot;,
+    component:Reg
+  &#125;,
+  // 重定向
+  &#123;
+    path:&quot;*&quot;,
+    redirect:&quot;/&quot; //  路由名称，不是组件
+  &#125;
+]
+
+const router = new VueRouter(&#123;
+  routes
+&#125;)
+
+export default router
+</code></pre>
+<p>main.js</p>
+<pre><code class="js">import Vue from &#39;vue&#39;
+import App from &#39;./App.vue&#39;
+// 引入路由模块
+import router from &#39;./router&#39;
+
+Vue.config.productionTip = false
+
+new Vue(&#123;
+  // 进行注册使用
+  router,
+  render: h =&gt; h(App)
+&#125;).$mount(&#39;#app&#39;)
+</code></pre>
+<h1 id="路由使用"><a href="#路由使用" class="headerlink" title="路由使用"></a>路由使用</h1><h2 id="1-项目搭建"><a href="#1-项目搭建" class="headerlink" title="1.项目搭建"></a>1.项目搭建</h2><h3 id="1-1-reset-css"><a href="#1-1-reset-css" class="headerlink" title="1.1.reset.css"></a>1.1.reset.css</h3><p>1.assets&#x2F;css下创建reset.css文件</p>
+<p>2.main.js引入</p>
+<pre><code class="js">// 2.引入css公共文件
+import &quot;./assets/css/reset.css&quot;;
+</code></pre>
+<h3 id="1-2-目录划分"><a href="#1-2-目录划分" class="headerlink" title="1.2.目录划分"></a>1.2.目录划分</h3><pre><code>-src
+    -assets 静态资源
+        -css
+        -js
+        -img
+    -components 全局的公共组件
+    -filters 过滤器
+    -views 页面组件（路由）
+        -home  后面页面
+            home.vue  页面路由组件
+    -request 请求
+    -router 路由
+        index.js
+    Appvue 根组件
+    main.js 入口文件
+</code></pre>
+<h2 id="2-一级路由【完整页面】"><a href="#2-一级路由【完整页面】" class="headerlink" title="2.一级路由【完整页面】"></a>2.一级路由【完整页面】</h2><p>1.创建一堆相关组件</p>
+<pre><code>login   登录
+index 大首页
+movie 电影
+movieDetail 电影详情
+food  外卖
+foodDetail 外卖详情
+</code></pre>
+<p>2.配置规则[src&#x2F;router&#x2F;index.js]</p>
+<pre><code class="js">// 路由文件
+import Vue from &#39;vue&#39;
+import VueRouter from &#39;vue-router&#39;
+// 引入页面组件
+import Index from &quot;../views/index.vue&quot;
+import Login from &quot;../views/login.vue&quot;
+import Movie from &quot;../views/movie.vue&quot;
+import Food from &quot;../views/food.vue&quot;
+import MovieDetail from &quot;../views/movieDetail.vue&quot;
+import FoodDetail from &quot;../views/foodDetail.vue&quot;
+// .vue    页面     公共组件
+Vue.use(VueRouter)
+// 制定路由规则
+const routes = [
+  &#123;
+    path:&quot;/&quot;,
+    component:Index
+  &#125;,
+  &#123;
+    path:&quot;/index&quot;,
+    component:Index
+  &#125;,
+  &#123;
+    path:&quot;/login&quot;,
+    component:Login
+  &#125;,
+  &#123;
+    path:&quot;/movie&quot;,
+    component:Movie
+  &#125;,
+  &#123;
+    path:&quot;/food&quot;,
+    component:Food
+  &#125;,
+  &#123;
+    path:&quot;/movieDetail&quot;,
+    component:MovieDetail
+  &#125;,
+  &#123;
+    path:&quot;/foodDetail&quot;,
+    component:FoodDetail
+  &#125;,
+  // 重定向
+  &#123;
+    path:&quot;*&quot;,
+    redirect:&quot;/&quot; //  路由名称，不是组件
+  &#125;
+]
+
+const router = new VueRouter(&#123;
+  routes
+&#125;)
+
+export default router
+</code></pre>
+<p>3.路由出口 [ src&#x2F;App.vue]</p>
+<pre><code class="vue">&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;!-- 路由出口 --&gt;
+    &lt;router-view/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<h2 id="3-路由跳转-路由导航"><a href="#3-路由跳转-路由导航" class="headerlink" title="3.路由跳转|路由导航"></a>3.路由跳转|路由导航</h2><h3 id="3-1-router-link直接跳转"><a href="#3-1-router-link直接跳转" class="headerlink" title="3.1.router-link直接跳转"></a>3.1.router-link直接跳转</h3><p>声明式跳转： 标签的形式进行跳转</p>
+<pre><code class="vue">&lt;router-link to=&quot;/index&quot;&gt;
+  &lt;button&gt;登录&lt;/button&gt;
+&lt;/router-link&gt;
+</code></pre>
+<h3 id="3-2-编程式导航-（推荐）"><a href="#3-2-编程式导航-（推荐）" class="headerlink" title="3.2.编程式导航 （推荐）"></a>3.2.编程式导航 （推荐）</h3><p>  js进行跳转</p>
+<pre><code class="js">this.$router.push(path) //添加了一条新的历史记录
+this.$router.replace(path) //用新的记录替换当前历史记录
+this.$router.go(-1) //返回
+</code></pre>
+<p>代码：</p>
+<p>login.vue</p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;login登录页面&lt;/h3&gt;
+        &lt;div&gt;
+            账号:
+            &lt;input type=&quot;text&quot; v-model=&quot;phone&quot; placeholder=&quot;账号&quot;&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+            密码:
+            &lt;input type=&quot;text&quot; v-model=&quot;password&quot; placeholder=&quot;密码&quot;&gt;
+        &lt;/div&gt;
+        &lt;!-- 1.声明式跳转 --&gt;
+        &lt;!-- &lt;router-link to=&quot;/index&quot;&gt;
+            &lt;button&gt;登录&lt;/button&gt;
+        &lt;/router-link&gt; --&gt;
+        &lt;!-- 2.编程式 使用js --&gt;
+        &lt;button @click=&quot;login&quot;&gt;登录&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    data() &#123;
+        return &#123;
+            phone: &quot;&quot;,
+            password: &quot;&quot;
+        &#125;
+    &#125;,
+    methods: &#123;
+        login() &#123;
+            // console.log(123)
+            // 登录的业务逻辑
+            var user = &quot;189&quot;, pass = 123; //假的
+            var &#123; phone, password &#125; = this; //用户填写的
+            if(user != phone &amp;&amp;  pass != password)&#123;
+                alert(&quot;用户名密码错误&quot;);
+                return;
+            &#125;
+            // 认证成功
+            this.$router.push(&quot;/index&quot;);
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<p><strong>c2</strong></p>
+<h2 id="4-二级路由-【拼接大页面的二级页面】"><a href="#4-二级路由-【拼接大页面的二级页面】" class="headerlink" title="4.二级路由 【拼接大页面的二级页面】"></a>4.二级路由 【拼接大页面的二级页面】</h2><p>1.pages创建相关组件</p>
+<pre><code>home  首页
+cate 分类
+shop 购物车
+mine 我的
+</code></pre>
+<p>2.路由出口 [ src&#x2F;pages&#x2F;index&#x2F;index.vue]</p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;!-- 顶部导航 --&gt;
+        &lt;div class=&quot;header&quot;&gt;首页&lt;/div&gt;
+        &lt;!-- 中间内容显示部分： 二级页面 --&gt;
+        &lt;!-- 二级路由出口 --&gt;
+        &lt;router-view&gt;&lt;/router-view&gt;
+        &lt;!-- 顶部导航 tabbar--&gt;
+        &lt;div class=&quot;tabbar&quot;&gt;
+            &lt;div&gt;首页&lt;/div&gt;
+            &lt;div&gt;分类&lt;/div&gt;
+            &lt;div&gt;购物车&lt;/div&gt;
+            &lt;div&gt;我的&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>3.二级路由规则 [ router&#x2F;index.js]</p>
+<pre><code class="js">&#123;
+  path:&quot;/index&quot;,
+    component:Index,
+      // 设置二级路由
+      // /index/home
+      children:[
+        &#123;
+          path:&quot;home&quot;,
+          component:Home
+        &#125;,
+        &#123;
+          path:&quot;cate&quot;,
+          component:Cate
+        &#125;,
+        &#123;
+          path:&quot;cart&quot;,
+          component:Cart
+        &#125;,
+        &#123;
+          path:&quot;mine&quot;,
+          component:Mine
+        &#125;,
+      ]
+&#125;,
+</code></pre>
+<p>4.底部导航高亮效果1 router-link-active 默认类名</p>
+<pre><code class="css">.tabbar a.router-link-active&#123;
+        color: #fff;
+        background-color: orangered;
+        font-weight: bolder;
+    &#125; 
+</code></pre>
+<p>5.路由导航高亮2    active-class  修改默认类名</p>
+<pre><code class="vue">&lt;router-link to=&quot;/index/home&quot; active-class=&quot;active&quot; &gt;首页&lt;/router-link&gt;
+&lt;router-link to=&quot;/index/cate&quot; active-class=&quot;active&quot;&gt;分类&lt;/router-link&gt;
+&lt;router-link to=&quot;/index/cart&quot; active-class=&quot;active&quot;&gt;购物车&lt;/router-link&gt;
+&lt;router-link to=&quot;/index/mine&quot; active-class=&quot;active&quot;&gt;我的&lt;/router-link&gt;
+</code></pre>
+<pre><code class="css">.tabbar a.active&#123;
+  color: #fff;
+  background-color: orangered;
+  font-weight: bolder;
+&#125;
+</code></pre>
+<h2 id="5-home-vue-路由导航"><a href="#5-home-vue-路由导航" class="headerlink" title="5.home.vue 路由导航"></a>5.home.vue 路由导航</h2><pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;home首页&lt;/h3&gt;
+        &lt;!-- 1.使用router-link进行跳转 --&gt;
+        &lt;h3&gt;router-link&lt;/h3&gt;
+        &lt;router-link to=&quot;/movie&quot;&gt;
+            &lt;button&gt;电影&lt;/button&gt;
+        &lt;/router-link&gt;
+        &lt;router-link to=&quot;/food&quot;&gt;
+            &lt;button&gt;外卖&lt;/button&gt;
+        &lt;/router-link&gt;
+        &lt;!-- 2.使用push进行跳转 --&gt;
+        &lt;h3&gt;push&lt;/h3&gt;
+        &lt;button @click=&quot;movie&quot;&gt;电影&lt;/button&gt;
+        &lt;button @click=&quot;food&quot;&gt;外卖&lt;/button&gt;
+        &lt;!-- 3.使用replace进行跳转 --&gt;
+         &lt;h3&gt;replace&lt;/h3&gt;
+        &lt;button @click=&quot;movie1&quot;&gt;电影&lt;/button&gt;
+        &lt;button @click=&quot;food1&quot;&gt;外卖&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    methods: &#123;
+        // 使用push进行跳转,保留当前页面，跳转到下一页面
+        movie()&#123;
+            this.$router.push(&quot;/movie&quot;)
+        &#125;,
+        food()&#123;
+            this.$router.push(&quot;/food&quot;)
+        &#125;,
+        // 使用replace进行跳转，替换，关闭当前页面，跳转到下一页面
+        movie1()&#123;
+            this.$router.replace(&quot;/movie&quot;)
+        &#125;,
+        food1()&#123;
+            this.$router.replace(&quot;/food&quot;)
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="6-movie-vue-返回"><a href="#6-movie-vue-返回" class="headerlink" title="6.movie.vue 返回"></a>6.movie.vue 返回</h2><pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;button @click=&quot;back&quot;&gt; 《 &lt;/button&gt;
+        &lt;h3&gt;电影列表页面&lt;/h3&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    methods: &#123;
+        back() &#123;
+            this.$router.go(&quot;-1&quot;)//   -1代表返回1层
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<p><strong>c3</strong></p>
+<h1 id="路由高阶"><a href="#路由高阶" class="headerlink" title="路由高阶"></a>路由高阶</h1><h2 id="1-路由传参-电影"><a href="#1-路由传参-电影" class="headerlink" title="1.路由传参 [ 电影]"></a>1.路由传参 [ 电影]</h2><p>语法：</p>
+<pre><code class="js">传参：路由传参  ？ &amp; ；url地址传参  search传参
+
+接惨：this.$route.query.xxxx
+
+    this.$route  路由信息  用来获取参数
+    this.$router 路由对象，用来跳转页面
+</code></pre>
+<p>1.movie.vue 进行传参</p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;button @click=&quot;back&quot;&gt; 《 &lt;/button&gt;
+        &lt;h3&gt;电影列表页面&lt;/h3&gt;
+        &lt;div @click=&quot;toMovieDetail(item)&quot; v-for=&quot;(item) in movies&quot; :key=&quot;item.id&quot;&gt;
+            &lt;!-- url地址传参 search传参：  ？ &amp; --&gt;
+            &lt;!-- &lt;router-link :to=&quot;&#39;/movieDetail?id=&#39;+item.id+&#39;&amp;name=&#39;+item.name&quot;&gt;
+                id:&#123;&#123; item.id &#125;&#125; -- name:&#123;&#123; item.name &#125;&#125;--price:&#123;&#123; item.price &#125;&#125;
+            &lt;/router-link&gt; --&gt;
+            id:&#123;&#123; item.id &#125;&#125; -- name:&#123;&#123; item.name &#125;&#125;--price:&#123;&#123; item.price &#125;&#125;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    data() &#123;
+        return &#123;
+            movies: [
+                &#123; id: 1, name: &quot;功夫之王&quot;, price: 99 &#125;,
+                &#123; id: 2, name: &quot;喜剧之王&quot;, price: 100 &#125;,
+            ]
+        &#125;
+    &#125;,
+    methods: &#123;
+        back() &#123;
+            this.$router.go(&quot;-1&quot;)//   -1代表返回1层
+        &#125;,
+        toMovieDetail(item)&#123;
+            this.$router.push(`/movieDetail?id=$&#123;item.id&#125;&amp;name=$&#123;item.name&#125;`)
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<p>2.movieDetail.vue进行接收</p>
+<pre><code class="j">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;电影详情页面&lt;/h3&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    mounted() &#123;
+        //接收url地址传参参数
+        // console.log(this.$route)
+        var data = this.$route.query;
+        console.log(data)
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="2-动态路由传参-外卖"><a href="#2-动态路由传参-外卖" class="headerlink" title="2.动态路由传参 [外卖]"></a>2.动态路由传参 [外卖]</h2><p>语法：</p>
+<pre><code class="html">传递参数：/路由/1/2/3
+    使用动态路由传递参数，需要修改路由规则
+接收参数：
+    this.$route.params.xxx
+</code></pre>
+<p>2.修改路由规则 [src&#x2F;router&#x2F;index.js]</p>
+<pre><code class="js">&#123;
+  // 设置动态路由
+  path:&quot;/foodDetail/:id/:name&quot;,
+    component:FoodDetail
+&#125;,
+</code></pre>
+<p>3.food.vue跳转</p>
+<pre><code class="js"> methods:&#123;
+        toFoodDetail(item)&#123;
+            // 使用 动态路由
+            var &#123;id,name&#125; = item;
+            this.$router.push(`/foodDetail/$&#123;id&#125;/$&#123;name&#125;`)
+        &#125;
+    &#125;
+</code></pre>
+<p>4.foodDetail.vue接收参数</p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;外卖详情页面&lt;/h3&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    mounted() &#123;
+        console.log(this.$route.params)//获取参数
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="3-元信息-meta"><a href="#3-元信息-meta" class="headerlink" title="3.元信息 meta"></a>3.元信息 meta</h2><p>home、cate、cart、mine都需要一个头部，但是内容不一样，可以使用元信息实现。[src&#x2F;router&#x2F;index.js]</p>
+<pre><code class="js">&#123;
+    path:&quot;/index&quot;,
+    component:Index,
+    // 设置二级路由
+    // /index/home
+    children:[
+      &#123;
+        path:&quot;home&quot;,
+        component:Home,
+        // 路由元信息
+        meta:&#123;
+          title:&quot;首页&quot;
+        &#125;
+      &#125;,
+      &#123;
+        path:&quot;cate&quot;,
+        component:Cate,
+        meta:&#123;
+          title:&quot;分类&quot;
+        &#125;
+      &#125;,
+      &#123;
+        path:&quot;cart&quot;,
+        component:Cart,
+        meta:&#123;
+          title:&quot;购物车&quot;
+        &#125;
+      &#125;,
+      &#123;
+        path:&quot;mine&quot;,
+        component:Mine,
+        meta:&#123;
+          title:&quot;我的&quot;
+        &#125;
+      &#125;,
+    ]
+  &#125;,
+</code></pre>
+<p>Index.vue使用</p>
+<pre><code class="vue">&lt;!-- 顶部导航 --&gt;
+  &lt;div class=&quot;header&quot;&gt;&#123;&#123; $route.meta.title &#125;&#125;&lt;/div&gt;
+</code></pre>
+<p><strong>c7</strong></p>
+<h1 id="路由守卫"><a href="#路由守卫" class="headerlink" title="路由守卫"></a>路由守卫</h1><p>说明：守卫分类</p>
+<pre><code class="html">  1.全局前置守卫   --  整个园区的门卫
+  2.路由独享守卫   --  公司前台
+</code></pre>
+<h2 id="1-全局前置守卫-【实现登录拦截】"><a href="#1-全局前置守卫-【实现登录拦截】" class="headerlink" title="1. 全局前置守卫-【实现登录拦截】"></a>1. 全局前置守卫-【实现登录拦截】</h2><p>说明：</p>
+<pre><code class="html">router.beforeEach(to,from,next)
+to： 即将进入的路由对象
+from: 即将离开的路由对象
+next:向下运行
+需求： 登录之后，进入项目，否则进入登录页面；
+</code></pre>
+<p>1.login.vue设计一个标识，用来判断是否登录</p>
+<pre><code class="js">   methods: &#123;
+        login() &#123;
+            // console.log(123)
+            // 登录的业务逻辑
+            var user = &quot;189&quot;, pass = 123; //假的
+            var &#123; phone, password &#125; = this; //用户填写的
+            if(user != phone &amp;&amp;  pass != password)&#123;
+                alert(&quot;用户名密码错误&quot;);
+                return;
+            &#125;
+            // 登录成功
+            // 存储登录状态
+            // 本地存储
+            localStorage.setItem(&quot;loginStatus&quot;,true)
+            // 认证成功
+            this.$router.push(&quot;/index/home&quot;);
+        &#125;
+    &#125;
+</code></pre>
+<p>2.router&#x2F;index.js 设置全局前置守卫</p>
+<pre><code class="js">/ 路由前置守卫
+// 需求： 不登录不让正常访问到项目，直接进入登录页面
+router.beforeEach((to, from, next) =&gt; &#123;
+  // console.log(to)
+  if(to.path ==&quot;/login&quot;)&#123;
+    next()
+    return;
+  &#125;
+  // to   去哪
+  // from  从哪来的
+  // next()  向下运行
+  // 判断是否登录，登录则next，没登录则 跳转到登录页面
+  var loginStatus = localStorage.getItem(&#39;loginStatus&#39;) || false;
+  // console.log(loginStatus)
+  if (loginStatus) &#123;
+    // 证明登陆了
+    next();
+  &#125; else &#123;
+    // console.log(&quot;未登录&quot;)
+    // 跳转到登录页面
+    next(&quot;/login&quot;)
+  &#125;
+
+&#125;)
+</code></pre>
+<h2 id="2-路由独享守卫"><a href="#2-路由独享守卫" class="headerlink" title="2.路由独享守卫"></a>2.路由独享守卫</h2><p>说明：</p>
+<pre><code class="html">beforeEnter
+案例需求：只有外卖小哥可以访问外卖一条线，只有用户可以访问电影一条线
+</code></pre>
+<p>1.login.vue</p>
+<pre><code class="vue">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;login登录页面&lt;/h3&gt;
+        &lt;select name=&quot;&quot; id=&quot;&quot; v-model=&quot;type&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;--选择用户--&lt;/option&gt;
+            &lt;option value=&quot;1&quot;&gt;普通用户&lt;/option&gt;
+            &lt;option value=&quot;2&quot;&gt;外卖小哥&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;div&gt;
+            账号:
+            &lt;input type=&quot;text&quot; v-model=&quot;phone&quot; placeholder=&quot;账号&quot;&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+            密码:
+            &lt;input type=&quot;text&quot; v-model=&quot;password&quot; placeholder=&quot;密码&quot;&gt;
+        &lt;/div&gt;
+        &lt;!-- 1.声明式跳转 --&gt;
+        &lt;!-- &lt;router-link to=&quot;/index&quot;&gt;
+            &lt;button&gt;登录&lt;/button&gt;
+        &lt;/router-link&gt; --&gt;
+        &lt;!-- 2.编程式 使用js --&gt;
+        &lt;button @click=&quot;login&quot;&gt;登录&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    data() &#123;
+        return &#123;
+            phone: &quot;&quot;,
+            password: &quot;&quot;,
+            type:1
+        &#125;
+    &#125;,
+    methods: &#123;
+        login() &#123;
+            // console.log(123)
+            // 登录的业务逻辑
+            var user = &quot;189&quot;, pass = 123; //假的
+            var &#123; phone, password &#125; = this; //用户填写的
+            if(user != phone &amp;&amp;  pass != password)&#123;
+                alert(&quot;用户名密码错误&quot;);
+                return;
+            &#125;
+            // 登录成功
+            // 存储登录状态
+            // 本地存储
+            localStorage.setItem(&quot;loginStatus&quot;,true)
+            // console.log(this.type)
+            localStorage.setItem(&#39;type&#39;,this.type)
+            // 认证成功
+            this.$router.push(&quot;/index/home&quot;);
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<p>2.router&#x2F;index.js添加<strong>路由独享守卫</strong></p>
+<pre><code class="js"> &#123;
+    path: &quot;/movie&quot;,
+    component: Movie,
+    // 路由独享守卫
+    beforeEnter: (to, from, next) =&gt; &#123;
+      // ...
+      // 普通用户访问
+      var type = localStorage.getItem(&#39;type&#39;);
+      if(type == 1)&#123;  //1  普通用户
+        next()
+      &#125;else&#123;
+        alert(&#39;没有权限&#39;)
+      &#125;
+    &#125;
+  &#125;,
+  &#123;
+    path: &quot;/food&quot;,
+    component: Food,
+    // 路由独享守卫
+    beforeEnter: (to, from, next) =&gt; &#123;
+      // ...
+      // 外卖小哥访问
+      var type = localStorage.getItem(&#39;type&#39;);
+      if(type == 2)&#123;  //2外卖小哥
+        next()
+      &#125;else&#123;
+        alert(&#39;没有权限&#39;)
+      &#125;
+    &#125;
+  &#125;,
+</code></pre>
+<p>3.home.vue</p>
+<pre><code class="js">&lt;template&gt;
+    &lt;div&gt;
+        &lt;h3&gt;home首页&lt;/h3&gt;
+        &lt;!-- 1.使用router-link进行跳转 --&gt;
+        &lt;h3&gt;router-link&lt;/h3&gt;
+        &lt;router-link to=&quot;/movie&quot; v-if=&quot;type == 1&quot; &gt;
+            &lt;button&gt;电影&lt;/button&gt;
+        &lt;/router-link&gt;
+        &lt;router-link to=&quot;/food&quot; v-if=&quot;type == 2&quot;&gt;
+            &lt;button&gt;外卖&lt;/button&gt;
+        &lt;/router-link&gt;
+        &lt;!-- 2.使用push进行跳转 --&gt;
+        &lt;h3&gt;push&lt;/h3&gt;
+        &lt;button @click=&quot;movie&quot; v-if=&quot;type == 1&quot;&gt;电影&lt;/button&gt;
+        &lt;button @click=&quot;food&quot; v-if=&quot;type == 2&quot;&gt;外卖&lt;/button&gt;
+        &lt;!-- 3.使用replace进行跳转 --&gt;
+         &lt;h3&gt;replace&lt;/h3&gt;
+        &lt;button @click=&quot;movie1&quot; v-if=&quot;type == 1&quot;&gt;电影&lt;/button&gt;
+        &lt;button @click=&quot;food1&quot; v-if=&quot;type == 2&quot;&gt;外卖&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default &#123;
+    data()&#123;
+        return &#123;
+            type:localStorage.getItem(&#39;type&#39;)
+        &#125;
+    &#125;,
+    methods: &#123;
+        // 使用push进行跳转,保留当前页面，跳转到下一页面
+        movie()&#123;
+            this.$router.push(&quot;/movie&quot;)
+        &#125;,
+        food()&#123;
+            this.$router.push(&quot;/food&quot;)
+        &#125;,
+        // 使用replace进行跳转，替换，关闭当前页面，跳转到下一页面
+        movie1()&#123;
+            this.$router.replace(&quot;/movie&quot;)
+        &#125;,
+        food1()&#123;
+            this.$router.replace(&quot;/food&quot;)
+        &#125;
+    &#125;
+&#125;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h1 id="数据交互"><a href="#数据交互" class="headerlink" title="数据交互"></a>数据交互</h1><h2 id="1-搭建后端-代码-x2F-shop-api"><a href="#1-搭建后端-代码-x2F-shop-api" class="headerlink" title="1.搭建后端[代码&#x2F;shop-api]"></a>1.搭建后端[代码&#x2F;shop-api]</h2><pre><code class="js">1.开启mysql服务
+2.打开数据库管理工具，建立链接，注意主机，mysql的用户名及密码
+3.创建数据库
+4.右键--运行sql（选择有数据sql文件）
+</code></pre>
+<h2 id="2-配置config"><a href="#2-配置config" class="headerlink" title="2.配置config"></a>2.配置config</h2><p>打开shop-api&#x2F;config&#x2F;global.js ,修改数据库密码和数据名</p>
+<pre><code class="js">// 数据库连接参数
+exports.dbConfig = &#123;
+    host: &#39;localhost&#39;, 
+    user: &#39;root&#39;,
+    password: &#39;&#39;,//数据库密码
+    port: 3306,
+    database: &#39;ushop&#39; ,// 数据库名字
+    timezone:&quot;SYSTEM&quot;
+&#125;
+</code></pre>
+<h2 id="3-启动后端-shop-api"><a href="#3-启动后端-shop-api" class="headerlink" title="3.启动后端 [shop-api]"></a>3.启动后端 [shop-api]</h2><pre><code class="js">node  app.js ||  npm  start
+</code></pre>
+<h2 id="4-配置代理-webpack"><a href="#4-配置代理-webpack" class="headerlink" title="4.配置代理 webpack"></a>4.配置代理 webpack</h2><p>解决跨域方式：</p>
+<pre><code class="html">1.将前端后端部署到同一个服务器下
+2.后端设置，允许进行跨域
+3.前端使用webpack设置代理
+</code></pre>
+<h3 id="4-1-项目下创建-vue-config-js"><a href="#4-1-项目下创建-vue-config-js" class="headerlink" title="4.1.项目下创建 vue.config.js"></a>4.1.项目下创建 vue.config.js</h3><p>语法:</p>
+<pre><code class="html">publicPath:&quot;&quot;  打包后的基础路径
+indexPath:&quot;&quot;   打包后的入口文件
+outputDir:&quot;&quot;   打包后的文件夹
+assetsDir:&quot;&quot;   打包后的静态资源
+devServe:&#123;proxy:&#123;&#125;&#125; 配置代理
+</code></pre>
+<p>代码：vue.config.js</p>
+<pre><code class="js">// webpack配置文件
+module.exports = &#123;
+    // 1.打包之后的入口文件
+    indexPath:&quot;index.html&quot;,
+    // 2.打包之后的路径
+    publicPath:&quot;&quot;,
+    // 3.打包之后的包名
+    outputDir:&quot;dist&quot;,
+    // 4.打包之后静态资源目录
+    assetsDir:&quot;static&quot;,
+    // 5.设置代理
+    devServer:&#123;
+        proxy:&#123;
+            &quot;/api&quot;:&#123;
+                target:&quot;http://localhost:3000&quot;,
+                changeOrigin:true, //允许跨域
+                ws:true,
+            &#125;,
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+
+        <!-- 分类文章 -->
+        
+          <div class="post-categoris-bottom">
+            <div class="post-categoris-name">Vue</div>
+            <ul>
+            
+            
+              
+            
+            
+            
+            
+            
+              
+            
+            
+            
+              
+            
+            
+            
+              
+            
+            
+            
+            
+            
+            
+            
+              
+                <li class="me base">
+                  <a  href="/GaoHangIdea/2022/10/19/%E7%AC%94%E8%AE%B003/" class="post-categoris-bottom-link">
+                  Vue基础3
+                </a>
+                </li>
+              
+              
+            
+            
+            
+            
+            </ul>
+
+          </div>
+
+        
+      </div>
+      <div class="post-content-inner-space">
+        
+          <div class="space-toc-main animate__animated  animate__fadeInUp">
+            <ol class="space-toc"><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="space-toc-text">2.代码实现</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="space-toc-text">1.概述</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E5%8C%BF%E5%90%8D%E6%8F%92%E6%A7%BD-%E4%B8%80%E4%B8%AA"><span class="space-toc-text">2.匿名插槽 (一个)</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#3-%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD-%E5%A4%9A%E4%B8%AA"><span class="space-toc-text">3.具名插槽(多个)</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E8%B7%AF%E7%94%B1%E4%BB%8B%E7%BB%8D"><span class="space-toc-text">1.路由介绍</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E8%B7%AF%E7%94%B1%E5%AE%89%E8%A3%85"><span class="space-toc-text">2.路由安装</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#3-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="space-toc-text">3.基本使用</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#4-%E8%B7%AF%E7%94%B1%E9%87%8D%E5%AE%9A%E5%90%91"><span class="space-toc-text">4.路由重定向</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA"><span class="space-toc-text">1.项目搭建</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E4%B8%80%E7%BA%A7%E8%B7%AF%E7%94%B1%E3%80%90%E5%AE%8C%E6%95%B4%E9%A1%B5%E9%9D%A2%E3%80%91"><span class="space-toc-text">2.一级路由【完整页面】</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#3-%E8%B7%AF%E7%94%B1%E8%B7%B3%E8%BD%AC-%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA"><span class="space-toc-text">3.路由跳转|路由导航</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#4-%E4%BA%8C%E7%BA%A7%E8%B7%AF%E7%94%B1-%E3%80%90%E6%8B%BC%E6%8E%A5%E5%A4%A7%E9%A1%B5%E9%9D%A2%E7%9A%84%E4%BA%8C%E7%BA%A7%E9%A1%B5%E9%9D%A2%E3%80%91"><span class="space-toc-text">4.二级路由 【拼接大页面的二级页面】</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#5-home-vue-%E8%B7%AF%E7%94%B1%E5%AF%BC%E8%88%AA"><span class="space-toc-text">5.home.vue 路由导航</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#6-movie-vue-%E8%BF%94%E5%9B%9E"><span class="space-toc-text">6.movie.vue 返回</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82-%E7%94%B5%E5%BD%B1"><span class="space-toc-text">1.路由传参 [ 电影]</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82-%E5%A4%96%E5%8D%96"><span class="space-toc-text">2.动态路由传参 [外卖]</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#3-%E5%85%83%E4%BF%A1%E6%81%AF-meta"><span class="space-toc-text">3.元信息 meta</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB-%E3%80%90%E5%AE%9E%E7%8E%B0%E7%99%BB%E5%BD%95%E6%8B%A6%E6%88%AA%E3%80%91"><span class="space-toc-text">1. 全局前置守卫-【实现登录拦截】</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E8%B7%AF%E7%94%B1%E7%8B%AC%E4%BA%AB%E5%AE%88%E5%8D%AB"><span class="space-toc-text">2.路由独享守卫</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#1-%E6%90%AD%E5%BB%BA%E5%90%8E%E7%AB%AF-%E4%BB%A3%E7%A0%81-x2F-shop-api"><span class="space-toc-text">1.搭建后端[代码&#x2F;shop-api]</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#2-%E9%85%8D%E7%BD%AEconfig"><span class="space-toc-text">2.配置config</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#3-%E5%90%AF%E5%8A%A8%E5%90%8E%E7%AB%AF-shop-api"><span class="space-toc-text">3.启动后端 [shop-api]</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#4-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86-webpack"><span class="space-toc-text">4.配置代理 webpack</span></a></li></ol>
+           </div>
+        
+      </div>
+   </div>
+    <!-- 评论 -->
+    
+  </div>
+</article>
+  </div>
+</div>
+
+
+
+<!-- 如果是home模式的话，不在首页就显示footer，如果不是home模式的话 所有都显示footer -->
+
+  <div class="footer-outer animate__animated  animate__fadeInUp">
+    <div class="footer-inner">
+    <div class="footer-text">
+    <p>If you don&#96;t want anything, you will return with a full load !</p>
+
+    </div>
+    <div class="footer-contact">
+    <ul class="footer-ul">
+        
+        <li class="footer-li">
+            <a href="https://github.com/godgaohhh/GaoHangIdea" target="_blank">
+                <i class="ri-github-line"></i>
+            </a>
+        </li>
+        
+        <li class="footer-li">
+            <a href="mailto:GaoHangde01@outlook.com" target="_blank">
+                <i class="ri-mail-line"></i>
+            </a>
+        </li>
+        
+    </ul>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="/GaoHangIdea/js/white.js"></script>
+
+
+
+    
+      
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+</body>
+</html>

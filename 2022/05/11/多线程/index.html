@@ -1,0 +1,1090 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>  手撕多线程 |    Fly_cloud</title>
+  <meta name="description" content="A minimalist theme for hexo.">
+  <!-- 标签页图标 -->
+  
+
+  <!-- 图标库 -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- 动画库 -->
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fushaolei/cdn-white@1.0/css/animate.css"/>
+  
+  <!-- css文件 -->
+  
+<link rel="stylesheet" href="/GaoHangIdea/css/white.css">
+
+  <!-- 代码高亮 -->
+  
+    
+      
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.1.1/styles/github.css">
+
+    
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+
+<div class="menu-outer">
+    <div class="menu-inner">
+      <div class="menu-site-name  animate__animated  animate__fadeInUp">
+        <a href="/GaoHangIdea/">
+          Fly_cloud
+        </a>
+        
+      </div>
+      <div class="menu-group">
+        <ul class="menu-ul">
+        
+          <a href="/GaoHangIdea/" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              HOME
+            </li>
+          </a>
+        
+          <a href="/GaoHangIdea/archives" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              BLOG
+            </li>
+          </a>
+        
+          <a href="/GaoHangIdea/tags" class="nav-link">
+            <li class="menu-li  animate__animated  animate__fadeInUp">
+              TAGS
+            </li>
+          </a>
+        
+        
+          <li class="menu-li animate__animated  animate__fadeInUp" id="sort">
+             分类
+             <div class="categories-outer " id="sort-div">
+               <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/Vue/">Vue</a></li><li class="category-list-item"><a class="category-list-link" href="/GaoHangIdea/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></li></ul>
+             </div>
+          </li>
+        
+        
+          <li class="menu-li animate__animated  animate__fadeInUp" id="mobile-menu">
+            <i class="ri-menu-line"></i>
+          </li>
+        
+        </ul>
+
+      </div>
+
+    </div>
+</div>
+<div id="mobile-main" class="animate__animated  animate__fadeIn">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-site-name animate__animated  animate__fadeInUp">
+      <a href="/GaoHangIdea/">
+        Fly_cloud
+      </a>
+    </div>
+    <div class="mobile-menu-group" id="mobile-close">
+      <i class="ri-close-line"></i>
+    </div>
+
+  </div>
+
+  <div class="mobile-menu-div">
+  
+    <a href="/GaoHangIdea/" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>HOME</span>
+      </div>
+    </a>
+  
+    <a href="/GaoHangIdea/archives" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>BLOG</span>
+      </div>
+    </a>
+  
+    <a href="/GaoHangIdea/tags" class="mobile-nav-link">
+      <div class="mobile-menu-child animate__animated  animate__fadeInUp">
+        <span>TAGS</span>
+      </div>
+    </a>
+  
+  
+  </div>
+
+
+</div>
+
+<div class="body-outer">
+  <div class="body-inner">
+    
+<article class="post-inner">
+  <div class="post-content-outer">
+    <div class="post-intro">
+      <div class="post-title animate__animated  animate__fadeInUp">手撕多线程</div>
+      <div class="meta-intro animate__animated  animate__fadeInUp">May 11 2022</div>
+      
+    </div>
+    <div class="post-content-inner">
+      <div class="post-content-inner-space">
+
+      </div>
+      <div class="post-content-main animate__animated  animate__fadeInUp">
+        <!-- top型目录 -->
+        
+        <h1 id="s多线程"><a href="#s多线程" class="headerlink" title="s多线程"></a>s多线程</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li><p>进程和线程去区别</p>
+<ul>
+<li>一个进程是一个软件</li>
+<li>一个线程是是执行单元</li>
+<li>一个进程会启动多个线程 </li>
+<li>一个Java程序程序执行，至少有两个线程执行，一个是main方法，一个是垃圾回收机制  <span id="more"></span></li>
+</ul>
+</li>
+<li><p>进程和线程是什么关系</p>
+<ul>
+<li>进程包含多个线程</li>
+<li>进程与进程之间资源不共享</li>
+<li>线程与线程之间部分资源共享<ul>
+<li>在java中线程与线程之间，堆内存和方法去内存共享，但是栈内存独立，一个线程一个栈</li>
+</ul>
+</li>
+<li>多线程是互不干扰的，各自执行各自的</li>
+</ul>
+</li>
+<li><p>java中多线程的目的是为例提高程序的处理效率 </p>
+</li>
+<li><p>下面程序有几个进程：</p>
+</li>
+</ul>
+<pre><code class="java">public class THreadTest01()&#123;
+    public static void main(String[] args)&#123;
+     	System.out.println(&quot;main begin&quot;);
+     	m1();
+     	System.out.println(&quot;main over!&quot;);
+        &#125;
+    public ststic void m1()&#123;
+        System.out.println(&quot;m1 begin&quot;);
+    &#125;
+&#125;
+
+//1个线程
+</code></pre>
+<h2 id="java中有两种方式实现线程"><a href="#java中有两种方式实现线程" class="headerlink" title="java中有两种方式实现线程"></a>java中有两种方式实现线程</h2><ul>
+<li><p>编写一个类，字节继承java.lang.Thread,重写run方法</p>
+<pre><code class="java">public class THreadTest02 &#123;
+    public static void main(String[] args) &#123;
+        //新建一个分资线程
+        MyThread myThread = new MyThread();
+        //启动线程
+        myThread.start();
+        for(int i = 0;i &lt; 100; i ++)&#123;
+            System.out.println(&quot;中单补刀：&quot; + i);
+        &#125;
+    &#125;
+    static class MyThread extends Thread&#123;
+        @Override
+        public void run()&#123;
+            for(int i = 0;i &lt; 100; i ++)&#123;
+                System.out.println(&quot;上路补刀：&quot; + i);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>start（）方法的作用是：启动一个分资线程，在JVM中开辟一个新的栈空间，这段代码完成后，瞬间结束，启动成功的线程自动调用run方法，在分支栈的栈底部（压栈），run方法和main方法是平级的</li>
+<li>ps：直接调用myTread.run()和myTread.start()的区别<ul>
+<li>myTread.run()：这个不会启动线程，不会分配新的分支栈</li>
+<li>myTread.start()：这个会启动新的线程，分配栈空间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>编写一个类，实现java.lang.Runnable接口，实现Run方法</p>
+<pre><code class="java">public class THreadTest02 &#123;
+    public static void main(String[] args) &#123;
+        //创建一个可运行的对象，并封装成线程对象
+        Thread t = new Thread(new MyRunnable();
+        t.start();
+        for (int i = 0; i &lt; 100; i++) &#123;
+            System.out.println(&quot;中单补刀：&quot; + i);
+        &#125;
+    &#125;
+
+    static class MyRunnable implements Runnable &#123;
+        @Override
+        public void run() &#123;
+            for (int i = 0; i &lt; 100; i++) &#123;
+                System.out.println(&quot;上路补刀：&quot; + i);
+            &#125;
+        &#125;
+    &#125;
+&#125;                           
+</code></pre>
+</li>
+<li><ul>
+<li><p>运用匿名内部类</p>
+<ul>
+<li><pre><code class="java">  import java.lang.Runnable;
+  
+  public class THreadTest02 &#123;
+      public static void main(String[] args) &#123;
+          //创建线程对象，采用匿名内部类方式
+          Thread t = new Thread(new Runnable() &#123;
+              @Override
+              public void run() &#123;
+                  for (int i = 0; i &lt; 100; i++) &#123;
+                      System.out.println(&quot;中单补刀：&quot; + i);
+                  &#125;
+              &#125;
+          &#125;);
+          t.start();
+          for (int i = 0; i &lt; 100; i++) &#123;
+              System.out.println(&quot;上单补刀：&quot; + i);
+          &#125;
+      &#125;
+  &#125;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h2>
+        <span class="lazyload-img-span">
+        <img   
+           data-src="https://s1.imagehub.cc/images/2022/05/09/8338ad2d13eed5d5a5a55c485188a734.png" >
+        </sapn>
+      
+
+<h2 id="获取线程的名字"><a href="#获取线程的名字" class="headerlink" title="获取线程的名字"></a>获取线程的名字</h2><pre><code class="java">public class THreadTest02 &#123;
+    public static void main(String[] args) &#123;
+        //currentThread就是当前线程对象
+        Thread currentThread = Thread.currentThread();
+        System.out.println(currentThread.getName());//当前线程的名字
+        MyThread t = new MyThread();
+        //设置线程的名字
+        t.setName(&quot;ttt&quot;);  //若不设置线程的名字，会有默认的名字Tread-0
+        //获取线程的名字
+        String tName = t.getName();
+        t.start();
+    &#125;
+    static class MyThread extends Thread&#123;
+        @Override
+        public void run()&#123;
+            Thread currentThread = Thread.currentThread();
+            System.out.println(currentThread.getName());
+            for(int i = 0;i &lt; 100; i ++)&#123;
+                System.out.println(&quot;上路补刀：&quot; + i);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="关于sleep方法"><a href="#关于sleep方法" class="headerlink" title="关于sleep方法"></a>关于sleep方法</h2><ul>
+<li><p>静态方法：Tread.sleep(1000)</p>
+</li>
+<li><p>参数是毫秒</p>
+</li>
+<li><p>作用：让当前线程进入休眠，进入“阻塞状态”，放弃账号有CPU时间片，让个其他线程使用</p>
+</li>
+<li><pre><code class="java">  public class THreadTest02 &#123;
+      public static void main(String[] args) &#123;
+          try &#123;
+              Thread.sleep(100*5);
+          &#125; catch (InterruptedException e) &#123;
+              e.printStackTrace();
+          &#125;
+          //5秒后执行这里的代码
+          System.out.println(&quot;hello word!&quot;);
+          
+          //每隔1秒输出当前线程名
+          for(int i =0 ;i &lt; 10;i++)&#123;
+              System.out.println(Thread.currentThread().getName() + &quot;---&gt;&quot; + i);
+              try &#123;
+                  Thread.sleep(1000);
+              &#125; catch (InterruptedException e) &#123;
+                  e.printStackTrace();
+              &#125;
+          &#125;
+      &#125;
+  &#125;
+</code></pre>
+</li>
+<li><p>sleep面试题</p>
+<ul>
+<li><p>问：t.sleep(1000);会让线程t进入休眠吗？</p>
+</li>
+<li><pre><code class="java">  public class THreadTest02 &#123;
+      public static void main(String[] args) &#123;
+          Thread t = new MyThread();
+          t.setName(&quot;t&quot;);
+          t.start();
+          try &#123;
+              t.sleep(1000);
+          &#125; catch (InterruptedException e) &#123;
+              e.printStackTrace();
+          &#125;
+          System.out.println(&quot;hello world!&quot;);
+      &#125;
+  
+      static class MyThread extends Thread&#123;
+          public void run()&#123;
+              for(int i = 0; i &lt; 10 ; i ++)&#123;
+                  System.out.println(Thread.currentThread().getName() + &quot;---&gt;&quot; + i);
+              &#125;
+  
+          &#125;
+      &#125;
+  &#125;
+</code></pre>
+</li>
+<li><p>答：不会；因为sleep（）方法不是线程t的，它是Thread的静态方法，则在执行这行代码时，它会转换成Thread.sleep(1000);,则是将主线程进入睡眠状态；</p>
+</li>
+</ul>
+</li>
+<li><p>怎么唤醒正在睡眠的线程？</p>
+<ul>
+<li><pre><code class="java">  public class THreadTest02 &#123;
+      public static void main(String[] args) &#123;
+          Thread t = new Thread(new MyThread());
+          t.setName(&quot;t&quot;);
+          t.start();
+          //5秒后唤醒t线程
+          try &#123;
+              t.sleep(1000*5);
+          &#125; catch (InterruptedException e) &#123;
+              e.printStackTrace();
+          &#125;
+          //唤醒t线程
+          t.interrupt();  //干扰，依靠java的异常处理机制
+      &#125;
+  
+      static class MyThread extends Thread&#123;
+          public void run()&#123;         //子类不能给父类抛异常
+              System.out.println(Thread.currentThread().getName() + &quot;---&gt; begin&quot; );
+              try &#123;
+                  Thread.sleep(1000*60*60*24*365);
+              &#125; catch (InterruptedException e) &#123;
+                  e.printStackTrace();
+              &#125;
+              System.out.println(Thread.currentThread().getName() + &quot;---&gt; end&quot;);
+          &#125;
+      &#125;
+  &#125;
+</code></pre>
+</li>
+<li><pre><code>  运行结果：
+  
+      t---&gt; begin
+      java.lang.InterruptedException: sleep interrupted
+          at java.base/java.lang.Thread.sleep(Native Method)
+          at THreadTest02$MyThread.run(THreadTest02.java:20)
+          at java.base/java.lang.Thread.run(Thread.java:833)
+      t---&gt; end
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="强行终止线程的执行"><a href="#强行终止线程的执行" class="headerlink" title="强行终止线程的执行"></a>强行终止线程的执行</h2><pre><code class="java">public class THreadTest02 &#123;
+    public static void main(String[] args) &#123;
+        MyRunnable r = new MyRunnable();
+        Thread t = new Thread(r);
+        t.setName(&quot;t&quot;);
+        t.start();
+
+        try &#123;
+            t.sleep(1000*5);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        //终止线程，把标记该为false
+        r.run = false;
+    &#125;
+
+    static class MyRunnable implements Runnable &#123;
+        boolean run = true;
+        @Override
+        public void run() &#123;
+            for (int i = 0; i &lt; 100; i++) &#123;
+                if(run)&#123;
+                    System.out.println( Thread.currentThread().getName() + &quot;----》&quot; + i);
+                    try &#123;
+                        Thread.sleep(1000);
+                    &#125; catch (InterruptedException e) &#123;
+                        e.printStackTrace();
+                    &#125;
+                &#125;else &#123;
+                    //如果有保存的可以在这里保存
+                    //save...
+                    //终止当前线程
+                    return;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;    
+</code></pre>
+<h2 id="线程的调度"><a href="#线程的调度" class="headerlink" title="线程的调度"></a>线程的调度</h2><ul>
+<li><p>常见的调度</p>
+<ul>
+<li>抢占式调度模型（java运用的）</li>
+<li>均分式调度模型</li>
+</ul>
+</li>
+<li><p>线程调度的方法</p>
+<ul>
+<li><p>实例方法</p>
+<ul>
+<li><p>void setPriority（int newPriority）设置线程的优先级</p>
+</li>
+<li><p>int newPriority（）获取线程的优先级</p>
+<p>  最低优先级1</p>
+<p>  默认优先级是5</p>
+<p>  最高优先级10</p>
+</li>
+</ul>
+</li>
+<li><p>静态方法</p>
+<ul>
+<li><p>static  void   yield（） 让位方法</p>
+<p>  暂停当前正在执行的线程对象，并执行其他线程</p>
+<p>  yield（）不是阻塞方法。</p>
+</li>
+</ul>
+</li>
+<li><p>实例方法</p>
+<ul>
+<li><p>void join（）  合并线程</p>
+<p>  class  MyThread{</p>
+<p>  ​		public void dosome(){</p>
+<p>  ​					MyThread t &#x3D; new MyThread();</p>
+<p>  ​					t.join();  &#x2F;&#x2F;当前线程进入阻塞，直到t线程结束，当前线程才可以开始执行</p>
+<p>  ​	}</p>
+<p>  }</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程安全（重点）"><a href="#线程安全（重点）" class="headerlink" title="线程安全（重点）"></a>线程安全（重点）</h2><ul>
+<li><p>什么时候数据在多线程并发发环境下会存在安全问题？</p>
+<ul>
+<li>多线程并发</li>
+<li>有共享数据</li>
+<li>共享数据有修改行为</li>
+</ul>
+<p> 满足以上三个条件就会存在线程安全问题</p>
+</li>
+<li><p>怎么解决安全问题</p>
+<ul>
+<li>线程排队执行（不能并发；“线程同步机制”，会牺牲效率）</li>
+</ul>
+</li>
+<li><p>线程同步</p>
+<ul>
+<li><p>异步编程模型：</p>
+<p> ​	线程他t1和线程t2，搁置执行各自的；其实就是多线程并发（效率高）；</p>
+</li>
+<li><p>同步编程模型：</p>
+<p> ​    线程t1和线程t2，在线程t1执行时，必须等待t2线程执行结束，或者t2等t1，两者发生等待关系，这就是同步编程模型。效率较低，线程排队执行。</p>
+</li>
+</ul>
+</li>
+<li><p>线程不安全的情况模拟（银行账户取款）</p>
+<ul>
+<li>创建银行账户类</li>
+</ul>
+<pre><code class="java">public class Account &#123;
+    private String actno;
+    private double balabce;
+    public Account()&#123;&#125;
+
+    public Account(String actno, double balabce) &#123;
+        this.actno = actno;
+        this.balabce = balabce;
+    &#125;
+
+    public String getActno() &#123;
+        return actno;
+    &#125;
+
+    public double getBalabce() &#123;
+        return balabce;
+    &#125;
+
+    public void setActno(String actno) &#123;
+        this.actno = actno;
+    &#125;
+
+    public void setBalabce(double balabce) &#123;
+        this.balabce = balabce;
+    &#125;
+
+    //取款方法
+    public void withdraw(double money)&#123;
+        double before = this.getBalabce();
+        double after = before - money;
+        //让线程睡眠1秒，必定100%出线程安全
+        try &#123;
+            Thread.sleep(1000);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        this.setBalabce(after);
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li><p>创建账户线程类</p>
+<pre><code class="java">public class AccountThread extends Thread&#123;
+    //两个线程必须共享同一个账户对象
+    private Account act;
+    //通过构造方法传递过来账户对象
+    public AccountThread(Account act)&#123;
+        this.act = act;
+    &#125;
+    public void run()&#123;
+        double money = 5000;
+        act.withdraw(money);
+        System.out.println(Thread.currentThread().getName() +&quot;账户&quot; + act.getActno() + &quot;取款成功，余额&quot; + act.getBalabce());
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>主方法调用</p>
+<pre><code class="java">public class Text &#123;
+    public static void main(String[] args) &#123;
+        Account act = new Account(&quot;act-001&quot;,10000);
+        Thread t1 = new AccountThread(act);
+        Thread t2 = new AccountThread(act);
+        t1.setName(&quot;t1&quot;);
+        t2.setName(&quot;t2&quot;);
+        t1.start();
+        t2.start();
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>运行结果(线程安全导致银行账户损失5000元子)</p>
+<pre><code>t1账户act-001取款成功，余额5000.0
+t2账户act-001取款成功，余额5000.0
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>解决线程安全问题（实现同步编程模型）</p>
+<ul>
+<li><p>只需要修改上述代码中的取款方法</p>
+<p> synchronized(){</p>
+<p> ​		&#x2F;&#x2F;线程同步代码块，小括号栈传递的参数必须是线程共享的的数据，才能达到多线程排队</p>
+<p> }</p>
+<pre><code class="java">   //取款方法
+    public void withdraw(double money)&#123;
+        synchronized (this)&#123;
+            double before = this.getBalabce();
+            double after = before - money;
+            //让线程睡眠1秒，必定100%出线程安全
+            try &#123;
+                Thread.sleep(1000);
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+            this.setBalabce(after);
+        
+</code></pre>
+</li>
+<li><p>线程安全的运行结果</p>
+<pre><code>t1账户act-001取款成功，余额5000.0
+t2账户act-001取款成功，余额0.0
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="synchronized-方法的理解"><a href="#synchronized-方法的理解" class="headerlink" title="synchronized 方法的理解"></a>synchronized 方法的理解</h2><ul>
+<li><p>在Java语言中，任何对象都有“一把锁”，其实争霸锁就是标记。（知识叫做锁）一个对象有一把锁，10个对象有10 把锁。</p>
+</li>
+<li><p>以下代码的执行原理（有点像上厕所，t1先进厕所，锁门，t2得等t1完事后开门出来，t2才能进去再锁门）</p>
+<ul>
+<li>t1和t2线程并发，开始执行以下代码的时候，肯定有一先一后。</li>
+<li>假设t1线程先执行，在t1到synchronized时，会自动找到后面的共享对象的对象锁，找到之后，并占有这把锁，然后执行同步同步代码块中的程序，在执行过程中一直都是占有这把锁的，直到同步代码块执行结束，这把锁才会释放。</li>
+<li>当t1线程已经占领了这把锁，t2线程页遇到synchronized时，也会去后面找共享对象的对象锁，然后去占领这把锁，结果已经被t1线程所占领，所以t2只能等到t1线程执行完成，释放对象锁后，才能占领这把锁，再执行代码块执行程序。</li>
+<li>
+        <span class="lazyload-img-span">
+        <img   
+           data-src="https://s1.imagehub.cc/images/2022/05/09/2.png" >
+        </sapn>
+      </li>
+</ul>
+</li>
+<li><p>synchronized放在实例方法上，共享变量一直是this</p>
+<pre><code class="java">public synchronized void withdraw(double money)&#123;
+            double before = this.getBalabce();
+            double after = before - money;
+            //让线程睡眠1秒，必定100%出线程安全
+            try &#123;
+                Thread.sleep(1000);
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            this.setBalabce(after)
+         &#125;
+</code></pre>
+<ul>
+<li>这样做的缺点：这样做表示整个方法体都需要同步，可能会无辜扩大同步的范围，导致程序的执行效率降低；</li>
+</ul>
+</li>
+</ul>
+<h2 id="Java中的三大变量"><a href="#Java中的三大变量" class="headerlink" title="Java中的三大变量"></a>Java中的三大变量</h2><ul>
+<li>实例变量：在堆中</li>
+<li>静态变量：在方法区中</li>
+<li>局部变量：在栈中</li>
+</ul>
+<p>​		局部变量不会出现线程安全问题，因为一个线程一个栈。</p>
+<ul>
+<li>StringBuffer和StringBuilder的区别是Buffer是线程安全的，而Builder是线程不安全的，所以在局部变量中，建议使用StringBuilder ，而在其他变量中若不涉及线程安全问题时建议也是用StringBuilder，但涉及到线程安全问题时建议使用StringBuffer；</li>
+<li>ArrayList时非线程安全的</li>
+<li>Vector时线程安全的</li>
+<li>HashMap  HashSet时非线程安全的</li>
+<li>Hashtable时线程安全的</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>synchronized的三种写法<ul>
+<li>第一种：synchronized代码块</li>
+<li>第二种：在实例方上使用synchronized，表示共享对象一点四this</li>
+<li>第三种：在静态方法x上使用synchorized，表示找类锁，类锁永远只有一把，无论创建几个对象都是只有一把类锁；</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于synchorized面试题"><a href="#关于synchorized面试题" class="headerlink" title="关于synchorized面试题"></a>关于synchorized面试题</h2><ul>
+<li><p>题目：doOther方法在执行时，需不需要等待doSome方法的结束？</p>
+<pre><code class="java">public class Exam01 &#123;
+    public static void main(String[] args) throws InterruptedException &#123;
+        MyClass mc = new MyClass();
+        Thread t1 = new MyThread(mc);
+        Thread t2 = new MyThread(mc);
+        t1.setName(&quot;t1&quot;);
+        t2.setName(&quot;t2&quot;);
+        t1.start();
+        Thread.sleep(1000);  //保证t1先执行
+        t2.start();
+    &#125;
+    static class MyThread extends Thread&#123;
+        private MyClass mc;
+        public MyThread(MyClass mc)&#123;
+            this.mc = mc;
+        &#125;
+        public void run()&#123;
+            if(Thread.currentThread().getName().equals(&quot;t1&quot;))&#123;
+                mc.dosome();
+            &#125;
+            if(Thread.currentThread().getName().equals(&quot;t2&quot;))&#123;
+                mc.doOther();
+            &#125;
+        &#125;
+    &#125;
+    static class MyClass&#123;
+        public synchronized void dosome()&#123;
+            System.out.println(&quot;Apex begin!&quot;);
+            try &#123;
+                Thread.sleep(1000*10);
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+            System.out.println(&quot;Apex over!&quot;);
+        &#125;
+        public void doOther()&#123;
+            System.out.println(&quot;LOL begin!&quot;);
+            System.out.println(&quot;LOL over!&quot;);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>答案：不需要，因为doOther方法没有synchronized</li>
+</ul>
+</li>
+<li><p>变式一：doOther添加synchronized，则需要等</p>
+</li>
+<li><p>变式二：在变式二的形式下创建mc1给t1线程，mc2给t2线程，则不需要等</p>
+</li>
+<li><p>变式三：将dosome和doOther改为static静态方法，则需要等，因为静态方法时类锁；、</p>
+</li>
+</ul>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><pre><code class="java">public class DeadLock &#123;
+    public static void main(String[] args) &#123;
+        Object o1 = new Object();
+        Object o2 = new Object();
+        Thread t1 = new MyThread1(o1, o2);
+        Thread t2 = new MyThread2(o1, o2);
+        t1.start();
+        try &#123;
+            Thread.sleep(1000);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        t2.start();
+
+    &#125;
+    static class MyThread1 extends Thread &#123;
+        Object o1;
+        Object o2;
+
+        public MyThread1(Object o1, Object o2) &#123;
+            this.o1 = o1;
+            this.o2 = o2;
+        &#125;
+
+        public void run() &#123;
+            synchronized (o1) &#123;
+                synchronized (o2) &#123;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    static class MyThread2 extends Thread &#123;
+        Object o1;
+        Object o2;
+
+        public MyThread2(Object o1, Object o2) &#123;
+            this.o1 = o1;
+            this.o2 = o2;
+        &#125;
+
+        public void run() &#123;
+            synchronized (o2) &#123;
+                synchronized (o1) &#123;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>synchronized最好不要嵌套使用，不然会发生时锁现象；</li>
+</ul>
+<h2 id="在开发中怎样解决线程安全问题"><a href="#在开发中怎样解决线程安全问题" class="headerlink" title="在开发中怎样解决线程安全问题"></a>在开发中怎样解决线程安全问题</h2><ul>
+<li>不会一上来就是用synchronized，因为synchronized会让程序的执行效率降低，用户体验不好。只有在去哦不得已的情况之下才会使用线程同步机制。</li>
+<li>解决方法：<ul>
+<li>第一种：尽量使用局部变量代替实例变量和静态变量。</li>
+<li>第二种：如果必须是实例变量，那么可以考虑创建多个对象，这样实例变量的内存就不共享了（100个线程，创建100个对象，对象不共享，就不会出现数据安全问题了）</li>
+<li>第三种：如果不能使用局部变量，对象也不能创建多个，那只能使用synchronized。线程同步机制。</li>
+</ul>
+</li>
+</ul>
+<h2 id="有关线程的其他内容"><a href="#有关线程的其他内容" class="headerlink" title="有关线程的其他内容"></a>有关线程的其他内容</h2><ul>
+<li><p>守护线程</p>
+<ul>
+<li><p>垃圾回收器就是一种守护线程</p>
+</li>
+<li><p>javaj语言中，有两种线程，一是用户线程，二是守护线程</p>
+</li>
+<li><p>守护线程的特点：</p>
+<p> 一般守护线程是一个死循环，所有用户线程只要结束，守护线程自动结束。</p>
+</li>
+<li><p>守护线程用在使命地方？</p>
+<pre><code class="java">Thread t = new Thread();
+t.setName(&quot;gaoyunhang&quot;);
+//启动线程之前，将线程设置为守护线程
+t.steDaemon(true);
+e.start();
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>定时器</p>
+<ul>
+<li><p>定时器的作用</p>
+<p> 间隔特定的时间，执行特定的程序。</p>
+<p> 每天进行数据的操作</p>
+</li>
+<li><p>实现定时器的操作</p>
+<ul>
+<li><p>第一种：sleep方法，这是最原始的定时器（比较low）</p>
+</li>
+<li><p>第二种：在java类库中已经写好了一个定时器：java.util.Timer</p>
+<pre><code class="java">public class TimerText &#123;
+    public static void main(String[] args) throws ParseException &#123;
+        //创建定时器对象
+        Timer timer = new Timer(true);//守护线程的方式
+        //timer.schedule(定时任务，第一次执行任务，间隔多久执行一次);
+        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss SSS&quot;);
+        Date firsitime = sdf.parse(&quot;2022-05-10 14:30:00&quot;);
+        timer.schedule(new ATimerTask(),firsitime,1000*20);
+    &#125;
+&#125;
+//编写同一个定时任务类
+//Timetask是一个抽象类，无法new，只能自己编写
+class ATimerTask extends TimerTask&#123;
+    @Override
+    public void run() &#123;
+        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
+        String strTime = sdf.format(new Date());
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>实现线程的第三种方式：FutrueTask方式，实现Callable接口。（JDk8引入的）</p>
+<ul>
+<li><pre><code class="java"> public class ThreadTest &#123;
+     public static void main(String[] args) throws ExecutionException, InterruptedException &#123;
+         FutureTask task =new FutureTask(new Callable() &#123;
+             //Callable（）有返回值   Runable（）无返回值
+             //Call()方法 就相当于run方法，之不过整个有返回值
+             @Override
+             public Object call() throws Exception &#123;
+                 System.out.println(&quot;call begin&quot;);
+                 Thread.sleep(1000);
+                 System.out.println(&quot;call end&quot;);
+                 int a = 100;
+                 int b = 200;
+                 return a + b;
+             &#125;
+         &#125;);
+         Thread t = new Thread(task);
+         t.start();
+         //获取线程t返回的对象，这里会导致mian方法组线程的阻塞，等待get方法发结束
+         Object obj = task.get();
+         System.out.println(obj);
+     &#125;
+ &#125;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>关于Object类中的wait和notify方法（生产者和消费者模式）</p>
+<ul>
+<li><p>wait和notify方法不是线程对象的的方法，是java中任何一个java对象都有的方法，因为着两个方法是Object类中自带的。wait和notify不是通过线程对象调用的；</p>
+</li>
+<li><p>wait（）方法的作用</p>
+<pre><code>Object o = new Object();
+o.wait();
+</code></pre>
+<ul>
+<li>wait方法会使当前对象上活动的线程进入无期限等待状态</li>
+</ul>
+</li>
+<li><p>notify（）方法的作用</p>
+<pre><code>Object o = new Object（）；
+o.notify();
+</code></pre>
+<ul>
+<li>唤醒正在o对象上等待的线程；</li>
+<li>还有notify()方法，这个方法是唤醒在当前对象上活动的所有线程；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>生产者和消费者模式</p>
+<ul>
+<li><p>生产线程负责生产，消费线程负责消费</p>
+</li>
+<li><p>生产线程和消费线程要达到均衡，这是一种特殊的业务需求，在这种情况下需要使用wait方法和notify方法</p>
+</li>
+<li><p>wait和notify方法不是线程的方法，是java对象都有的方法</p>
+</li>
+<li><p>wait和notify是建立在线程同步的基础上。因为多线程要同时操作一个仓库。有线程安全问题</p>
+</li>
+<li><p>wait方法的作用：o.wait()让正在o对象上活动的线程进入等待状态，并且释放t线程之前占有的锁；</p>
+</li>
+<li><p>notify方法作用：o.notify()让正在对象锁等待的线程唤醒，不会释放o对象上之前占有的锁；</p>
+</li>
+<li><p>生产者和消费者的实现</p>
+<pre><code class="java">public class ThreadTest11 &#123;
+    public static void main(String[] args) &#123;
+        List list = new ArrayList();
+        Thread t1 = new Thread(new Prduce(list));
+        Thread t2 = new Thread(new Coustmer(list));
+        t1.setName(&quot;生产者线程&quot;);
+        t2.setName(&quot;消费者线程&quot;);
+        t1.start();
+        t2.start();
+    &#125;
+
+    static class Prduce implements Runnable&#123;
+        private List list;
+        public Prduce(List list) &#123;
+            this.list = list;
+        &#125;
+        @Override
+        public void run() &#123;
+            while (true) &#123;
+                synchronized (list) &#123;
+                    if (list.size() &gt; 0) &#123;
+                        try &#123;
+                            list.wait();
+                        &#125; catch (InterruptedException e) &#123;
+                            e.printStackTrace();
+                        &#125;
+                    &#125;
+                    Object obj = new Object();
+                    list.add(obj);
+                    System.out.println(Thread.currentThread().getName() + &quot;---&gt;&quot; + obj);
+                    list.notify();
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    static class Coustmer implements Runnable&#123;
+        private List list;
+        public Coustmer(List list) &#123;
+            this.list = list;
+        &#125;
+        @Override
+        public void run() &#123;
+            while (true) &#123;
+                synchronized (list) &#123;
+                    if (list.size() == 0) &#123;
+                        try &#123;
+                            list.wait();
+                        &#125; catch (InterruptedException e) &#123;
+                            e.printStackTrace();
+                        &#125;
+                    &#125;
+                    Object obj = list.remove(0);
+                    System.out.println(Thread.currentThread().getName() + &quot;---&gt;&quot; + obj);
+                    list.notify();
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+        <span class="lazyload-img-span">
+        <img   
+           data-src="https://s1.imagehub.cc/images/2022/05/12/710b9c7771fc984f55d78e1cd8bacd3e.png" >
+        </sapn>
+      
+
+
+        <!-- 分类文章 -->
+        
+          <div class="post-categoris-bottom">
+            <div class="post-categoris-name">Java</div>
+            <ul>
+            
+            
+              
+                <li class="me base">
+                  <a  href="/GaoHangIdea/2022/05/11/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-categoris-bottom-link">
+                  手撕多线程
+                </a>
+                </li>
+              
+              
+            
+            
+            
+            
+            
+              
+            
+            
+            
+              
+            
+            
+            
+              
+            
+            
+            
+            
+            
+            
+            
+              
+            
+            
+            
+            
+            </ul>
+
+          </div>
+
+        
+      </div>
+      <div class="post-content-inner-space">
+        
+          <div class="space-toc-main animate__animated  animate__fadeInUp">
+            <ol class="space-toc"><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="space-toc-text">概述</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#java%E4%B8%AD%E6%9C%89%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%BA%BF%E7%A8%8B"><span class="space-toc-text">java中有两种方式实现线程</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="space-toc-text">线程的生命周期</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E8%8E%B7%E5%8F%96%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%90%8D%E5%AD%97"><span class="space-toc-text">获取线程的名字</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E5%85%B3%E4%BA%8Esleep%E6%96%B9%E6%B3%95"><span class="space-toc-text">关于sleep方法</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E5%BC%BA%E8%A1%8C%E7%BB%88%E6%AD%A2%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="space-toc-text">强行终止线程的执行</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6"><span class="space-toc-text">线程的调度</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="space-toc-text">线程安全（重点）</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#synchronized-%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3"><span class="space-toc-text">synchronized 方法的理解</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#Java%E4%B8%AD%E7%9A%84%E4%B8%89%E5%A4%A7%E5%8F%98%E9%87%8F"><span class="space-toc-text">Java中的三大变量</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="space-toc-text">总结</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E5%85%B3%E4%BA%8Esynchorized%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="space-toc-text">关于synchorized面试题</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E6%AD%BB%E9%94%81"><span class="space-toc-text">死锁</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E5%9C%A8%E5%BC%80%E5%8F%91%E4%B8%AD%E6%80%8E%E6%A0%B7%E8%A7%A3%E5%86%B3%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="space-toc-text">在开发中怎样解决线程安全问题</span></a></li><li class="space-toc-item space-toc-level-2"><a class="space-toc-link" href="#%E6%9C%89%E5%85%B3%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B6%E4%BB%96%E5%86%85%E5%AE%B9"><span class="space-toc-text">有关线程的其他内容</span></a></li></ol>
+           </div>
+        
+      </div>
+   </div>
+    <!-- 评论 -->
+    
+  </div>
+</article>
+  </div>
+</div>
+
+
+
+<!-- 如果是home模式的话，不在首页就显示footer，如果不是home模式的话 所有都显示footer -->
+
+  <div class="footer-outer animate__animated  animate__fadeInUp">
+    <div class="footer-inner">
+    <div class="footer-text">
+    <p>If you don&#96;t want anything, you will return with a full load !</p>
+
+    </div>
+    <div class="footer-contact">
+    <ul class="footer-ul">
+        
+        <li class="footer-li">
+            <a href="https://github.com/godgaohhh/GaoHangIdea" target="_blank">
+                <i class="ri-github-line"></i>
+            </a>
+        </li>
+        
+        <li class="footer-li">
+            <a href="mailto:GaoHangde01@outlook.com" target="_blank">
+                <i class="ri-mail-line"></i>
+            </a>
+        </li>
+        
+    </ul>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="/GaoHangIdea/js/white.js"></script>
+
+
+
+    
+      
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+
+      <script>hljs.initHighlightingOnLoad();</script>
+    
+
+</body>
+</html>
